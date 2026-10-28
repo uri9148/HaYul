@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 · SPACE</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#f3f5f0;color:#202b26;font-family:Arial,"Malgun Gothic",sans-serif}
+    main{width:min(100%,960px);min-height:600px;display:grid;grid-template-columns:1fr 1fr;background:white;border:1px solid #e3e7df;border-radius:28px;overflow:hidden;box-shadow:0 24px 70px #2036250c}
+    .intro{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:44px;background:#214c3b;color:#f3f6e8}.brand{font-size:19px;font-weight:700;letter-spacing:4px}.intro h1{position:relative;font-size:43px;font-weight:500;line-height:1.3;letter-spacing:-2px;margin:0 0 18px}.intro p{position:relative;color:#c6d6ca;line-height:1.8;font-size:14px}.orb{position:absolute;width:290px;height:290px;border-radius:50%;border:1px solid #ffffff26;right:-100px;top:85px;box-shadow:0 0 0 40px #ffffff07,0 0 0 80px #ffffff05}.small{font-size:11px;letter-spacing:2px;color:#b7c9bd}
+    .form-panel{padding:64px 48px;display:flex;flex-direction:column;justify-content:center}.eyebrow{font-size:11px;font-weight:bold;letter-spacing:2px;color:#6a8272}h2{font-size:29px;letter-spacing:-1px;margin:12px 0}.subtitle{font-size:14px;color:#7b847e;margin:0 0 32px;line-height:1.7}label.field{display:block;font-size:13px;font-weight:bold;margin:20px 0 9px}input[type=email],input[type=password],input[type=text]{width:100%;padding:15px;border:1px solid #dbe1da;border-radius:10px;background:#fcfdfa;font:inherit;font-size:14px;color:#202b26}input:focus{outline:2px solid #81ab91;outline-offset:2px}.password{position:relative}.password input{padding-right:62px}.toggle{position:absolute;right:8px;top:8px;border:0;background:transparent;padding:8px;color:#617969;cursor:pointer}.options{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0 26px;font-size:12px;color:#6c786f}.remember{display:flex;align-items:center;gap:6px}.remember input{accent-color:#214c3b}.submit{width:100%;padding:16px;border:0;border-radius:10px;background:#214c3b;color:white;font:inherit;font-size:14px;font-weight:bold;cursor:pointer;transition:background .2s}.submit:hover{background:#31664f}.submit:focus-visible,.toggle:focus-visible{outline:3px solid #81ab91;outline-offset:3px}.demo{min-height:36px;font-size:12px;line-height:1.7;color:#526f5d;margin:18px 0 0}.footer{font-size:11px;color:#9aa29b;margin-top:24px}.badge{font-size:11px;color:#63766a;border:1px solid #dce4dc;border-radius:20px;padding:5px 9px;white-space:nowrap}
+    @media(max-width:700px){main{grid-template-columns:1fr;max-width:440px}.intro{padding:28px;min-height:210px;gap:28px}.intro h1{font-size:30px;margin-bottom:8px}.intro p,.small{display:none}.orb{top:-65px}.form-panel{padding:32px 28px}.subtitle{margin-bottom:20px}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="intro" aria-label="환영 인사">
+      <div class="brand">SPACE<span style="color:#c9da9b">.</span></div>
+      <div class="orb" aria-hidden="true"></div>
+      <div><h1>당신의 하루에,<br>새로운 시작을.</h1><p>작은 아이디어가 시작되는 공간.<br>로그인하고 오늘의 가능성을 만나보세요.</p></div>
+      <div class="small">A LITTLE SPACE FOR YOUR NEXT IDEA</div>
+    </section>
+    <section class="form-panel" aria-labelledby="login-title">
+      <div class="eyebrow">WELCOME BACK</div>
+      <h2 id="login-title">다시 만나 반가워요</h2>
+      <p class="subtitle">계정 정보를 입력하고 시작하세요.</p>
+      <form id="login-form">
+        <label class="field" for="email">이메일</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="username" required>
+        <label class="field" for="password">비밀번호</label>
+        <div class="password"><input id="password" name="password" type="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required><button class="toggle" type="button" aria-controls="password" aria-pressed="false">표시</button></div>
+        <div class="options"><label class="remember"><input type="checkbox" name="remember"> 이메일 기억하기</label><span class="badge">데모 화면</span></div>
+        <button class="submit" type="submit">로그인 <span aria-hidden="true">→</span></button>
+        <p class="demo" id="message" role="status">화면 미리보기용입니다. 실제 계정 인증은 연결되어 있지 않습니다.</p>
+      </form>
+      <div class="footer">© 2026 SPACE. Make room for something good.</div>
+    </section>
+  </main>
+  <script>
+    const form=document.querySelector('form'),email=document.querySelector('#email'),password=document.querySelector('#password'),toggle=document.querySelector('.toggle'),remember=form.elements.remember;
+    try{email.value=localStorage.getItem('space-demo-email')||'';remember.checked=Boolean(email.value)}catch{}
+    toggle.addEventListener('click',()=>{const visible=password.type==='password';password.type=visible?'text':'password';toggle.textContent=visible?'숨김':'표시';toggle.setAttribute('aria-pressed',String(visible))});
+    form.addEventListener('submit',event=>{event.preventDefault();try{if(remember.checked)localStorage.setItem('space-demo-email',email.value);else localStorage.removeItem('space-demo-email')}catch{}document.querySelector('#message').textContent='입력 확인 완료! 실제 로그인은 서버 연결 후 사용할 수 있습니다.';password.value=''});
+  </script>
+</body>
+</html>
